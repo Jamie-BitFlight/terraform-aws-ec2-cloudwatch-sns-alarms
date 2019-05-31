@@ -1,1 +1,0 @@
-# terraform-aws-ec2-cloudwatch-sns-alarms
