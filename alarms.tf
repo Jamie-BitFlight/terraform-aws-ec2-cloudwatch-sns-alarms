@@ -18,8 +18,8 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   statistic           = "Average"
   threshold           = "${local.thresholds["CPUUtilizationThreshold"]}"
   alarm_description   = "${format(var.alarm_description, "CPU", var.period/60, "high", var.evaluation_periods)}"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = ["${local.sns_topic_arn}"]
+  ok_actions          = ["${local.sns_topic_arn}"]
   treat_missing_data  = "notBreaching"
 
   dimensions = {
@@ -39,8 +39,8 @@ resource "aws_cloudwatch_metric_alarm" "cpu_credit_balance_too_low" {
   statistic           = "Average"
   threshold           = "${local.thresholds["CPUCreditBalanceThreshold"]}"
   alarm_description   = "${format(var.alarm_description, "CPU credit balance", var.period/60, "low", var.evaluation_periods)}"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = ["${local.sns_topic_arn}"]
+  ok_actions          = ["${local.sns_topic_arn}"]
   treat_missing_data  = "notBreaching"
 
   dimensions = {
@@ -60,8 +60,8 @@ resource "aws_cloudwatch_metric_alarm" "status_check_failed_alarm" {
   statistic           = "Sum"
   threshold           = "0"
   alarm_description   = "${format(var.alarm_description, "CPU credit balance", var.period/60, "low", var.evaluation_periods)}"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = ["${local.sns_topic_arn}"]
+  ok_actions          = ["${local.sns_topic_arn}"]
   treat_missing_data  = "notBreaching"
 
   dimensions = {
@@ -78,8 +78,8 @@ resource "aws_cloudwatch_metric_alarm" "network_burst_utilisation_too_high" {
   period              = "${var.period}"
   threshold           = "${element(data.aws_lambda_invocation.instance.*.result_map["NetworkBurst"], count.index)}"
   alarm_description   = "${format(var.alarm_description, "Network In+Out burst utilization", var.period/60, "high", var.evaluation_periods)}"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = ["${local.sns_topic_arn}"]
+  ok_actions          = ["${local.sns_topic_arn}"]
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -135,8 +135,8 @@ resource "aws_cloudwatch_metric_alarm" "network_baseline_utilisation_too_high" {
   period              = "${var.period}"
   threshold           = "${element(data.aws_lambda_invocation.instance.*.result_map["NetworkBaseline"], count.index)}"
   alarm_description   = "${format(var.alarm_description, "Network In+Out baseline utilization", var.period/60, "high", var.evaluation_periods)}"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = ["${local.sns_topic_arn}"]
+  ok_actions          = ["${local.sns_topic_arn}"]
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -192,8 +192,8 @@ resource "aws_cloudwatch_metric_alarm" "network_maximum_utilisation_too_high" {
   period              = "${var.period}"
   threshold           = "${element(data.aws_lambda_invocation.instance.*.result_map["NetworkMaximum"], count.index)}"
   alarm_description   = "${format(var.alarm_description, "Network In+Out utilization", var.period/60, "high", var.evaluation_periods)}"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = ["${local.sns_topic_arn}"]
+  ok_actions          = ["${local.sns_topic_arn}"]
   treat_missing_data  = "notBreaching"
 
   metric_query {

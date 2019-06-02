@@ -69,8 +69,8 @@ usage: |-
     namespace      = "cp"
     stage          = "prod"
     name           = "app"
-    cluster_name   = "example"
-    service_name   = "app"
+    existing_sns_topic_arn   = "arn:::::some-sns-arn"
+    instance_ids   = ["i-036eab29c7531c7bf", "i-036eab29c7djdnju83"]
   }
   ```
 

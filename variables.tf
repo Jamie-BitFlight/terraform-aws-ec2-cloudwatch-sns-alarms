@@ -49,3 +49,8 @@ variable "alarm_description" {
   description = "The string to format and use as the alarm description."
   default     = "Average %v utilization over last %d minute(s) too %v over %v period(s)"
 }
+
+variable "existing_sns_topic_arn" {
+  description = "Pass in an existing SNS topic ARN instead of creating a new sns topic"
+  default     = ""
+}

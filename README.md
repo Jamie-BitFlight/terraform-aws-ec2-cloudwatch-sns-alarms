@@ -55,8 +55,8 @@ module "ec2_service_alarms" {
   namespace      = "cp"
   stage          = "prod"
   name           = "app"
-  cluster_name   = "example"
-  service_name   = "app"
+  existing_sns_topic_arn   = "arn:::::some-sns-arn"
+  instance_ids   = ["i-036eab29c7531c7bf", "i-036eab29c7djdnju83"]
 }
 ```
 
@@ -78,6 +78,7 @@ module "ec2_service_alarms" {
 | enabled | Whether to create all resources | string | `true` | no |
 | environment | Environment (e.g. `prod`, `dev`, `staging`) | string | `` | no |
 | evaluation_periods | Number of periods to evaluate for the alarm. | string | `1` | no |
+| existing_sns_topic_arn | Pass in an existing SNS topic ARN instead of creating a new sns topic | string | `` | no |
 | instance_ids | The instance IDs of the EC2 instances that you want to monitor. | list | `<list>` | no |
 | instance_ids_count | The total number of instance ID's provided | string | `0` | no |
 | name | Name (unique identifier for app or service) | string | `` | no |

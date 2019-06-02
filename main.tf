@@ -16,14 +16,23 @@ locals {
 
 # Make a topic
 resource "aws_sns_topic" "default" {
-  count       = "${local.enabled}"
+  count       = "${local.enabled && var.existing_sns_topic_arn == "" ? 1 : 0}"
   name_prefix = "ec2-threshold-alerts"
+}
+
+data "aws_sns_topic" "default" {
+  count = "${local.enabled}"
+  arn   = "${var.existing_sns_topic_arn == "" ? join("", aws_sns_topic.default.*.arn) : var.existing_sns_topic_arn}"
 }
 
 resource "aws_sns_topic_policy" "default" {
   count  = "${local.enabled}"
-  arn    = "${aws_sns_topic.default.arn}"
+  arn    = "${local.sns_topic_arn}"
   policy = "${data.aws_iam_policy_document.sns_topic_policy.json}"
+}
+
+locals {
+  sns_topic_arn = "${join("", data.aws_sns_topic.default.*.arn)}"
 }
 
 data "aws_iam_policy_document" "sns_topic_policy" {
@@ -46,7 +55,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
     ]
 
     effect    = "Allow"
-    resources = ["${aws_sns_topic.default.arn}"]
+    resources = ["${local.sns_topic_arn}"]
 
     principals {
       type        = "AWS"
@@ -66,7 +75,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
   statement {
     sid       = "Allow CloudwatchEvents"
     actions   = ["sns:Publish"]
-    resources = ["${aws_sns_topic.default.arn}"]
+    resources = ["${local.sns_topic_arn}"]
 
     principals {
       type        = "Service"
